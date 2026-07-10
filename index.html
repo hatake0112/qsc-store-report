@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>どてっぱん 店舗診断書（前月振り返り用）</title>
+<style>
+  :root{
+    --navy:#1F3864; --ember:#1F3864; --ember-deep:#16283F; --steel:#2E4B7A;
+    --gold:#2F6FB0; --sky:#3E7CC0; --ink:#1B2430;
+    --ink-mid:#5A6472; --line:#D7DEE8; --tint-amber:#EAF1F8; --tint-gold:#EEF3FA;
+    --tint-gray:#EEF1F6; --ok:#2E7D5B; --warn:#2F6FB0; --miss:#C0473A; --bg:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:#EEF2F7;color:var(--ink);
+    font-family:"Yu Gothic","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;}
+  .wrap{max-width:980px;margin:0 auto;padding:24px 18px 80px;}
+  .topbar{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+  .topbar::before{content:"";width:26px;height:3px;background:var(--sky);border-radius:2px;}
+  .brand{font-weight:700;letter-spacing:.24em;color:var(--sky);font-size:12px;}
+  h1{font-size:27px;margin:2px 0 8px;letter-spacing:.02em;color:var(--navy);font-weight:800;}
+  h1 .amb{color:var(--sky);}
+  .h1sub{font-size:14px;color:var(--ink-mid);font-weight:500;margin-left:10px;letter-spacing:.03em;}
+  .lead{color:var(--ink-mid);font-size:13.5px;line-height:1.7;margin:0 0 18px;}
+  .controls{background:var(--bg);border:1px solid var(--line);border-radius:14px;
+    padding:16px 18px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:22px;}
+  .btn{font:inherit;font-weight:700;font-size:14px;color:#fff;background:linear-gradient(90deg,var(--ember),#E8693E);
+    border:none;border-radius:10px;padding:10px 18px;cursor:pointer;}
+  .btn.ghost{background:transparent;color:var(--ink-mid);border:1px solid var(--line);}
+  .btn.mini{font-size:11px;padding:5px 11px;margin-top:7px;border-radius:8px;}
+  .month{font:inherit;font-size:14px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;}
+  .hint{color:var(--ink-mid);font-size:12.5px;}
+  .err{color:var(--miss);font-size:13px;margin-bottom:14px;}
+  .targets{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin-bottom:22px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;}
+  .targets .tlab{font-weight:700;font-size:13px;color:var(--ink);}
+  .targets label{font-size:12.5px;color:var(--ink-mid);display:inline-flex;align-items:center;gap:5px;}
+  .targets input{width:56px;font:inherit;font-size:13px;padding:5px 7px;border:1px solid var(--line);border-radius:7px;text-align:right;color:var(--ink);}
+  .targets .reset{font-size:11px;padding:6px 12px;}
+  /* summary */
+  .summary{background:var(--bg);border:1px solid var(--line);border-top:3px solid var(--navy);border-radius:12px;padding:18px 20px;margin-bottom:24px;box-shadow:0 1px 3px rgba(31,56,100,.05);}
+  .summary h2{font-size:12px;letter-spacing:.16em;color:var(--sky);margin:0 0 12px;text-transform:uppercase;font-weight:700;}
+  .sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;}
+  .stat .k{font-size:12px;color:var(--ink-mid);}
+  .stat .v{font-weight:800;font-size:30px;line-height:1.1;color:var(--navy);}
+  .stat .u{font-size:13px;color:var(--ink-mid);}
+  .savg{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+  .chip{font-size:12px;border:1px solid var(--line);background:#F6F9FC;border-radius:20px;padding:5px 13px;color:var(--ink-mid);}
+  .chip b{color:var(--navy);}
+  /* card */
+  .card{background:var(--bg);border:1px solid var(--line);border-top:3px solid var(--navy);border-radius:12px;padding:20px 22px;margin-bottom:18px;box-shadow:0 1px 3px rgba(31,56,100,.05);}
+  .chead{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1.5px solid var(--line);padding-bottom:11px;margin-bottom:14px;}
+  .cardlabel{font-size:10.5px;letter-spacing:.14em;color:var(--sky);font-weight:700;margin-bottom:3px;}
+  .chead .name{font-weight:800;font-size:20px;color:var(--navy);}
+  .chead .rom{font-size:11px;letter-spacing:.18em;color:var(--gold);font-weight:700;}
+  .chead .meta{text-align:right;font-size:12px;color:var(--ink-mid);}
+  .clear{display:inline-block;font-size:10px;letter-spacing:.1em;color:#fff;background:var(--ok);border-radius:20px;padding:3px 10px;font-weight:700;}
+  .revisit{display:flex;align-items:baseline;gap:8px;margin:6px 0 4px;}
+  .revisit .big{font-weight:800;font-size:40px;line-height:1;}
+  .revisit .of{font-size:14px;color:var(--ink-mid);}
+  .delta.up{color:var(--ok);} .delta.down{color:var(--miss);} .delta.flat{color:var(--ink-mid);}
+  /* 4項目テーブル（数値のみ） */
+  .subtbl{width:100%;border-collapse:collapse;margin-top:14px;font-size:14px;}
+  .subtbl thead th{font-size:11px;font-weight:600;color:var(--ink-mid);padding:6px 8px 7px;border-bottom:1.5px solid var(--line);}
+  .subtbl th.l,.subtbl td.l{text-align:left;}
+  .subtbl th.r,.subtbl td.r{text-align:right;}
+  .subtbl tbody td{padding:11px 8px;border-bottom:1px solid var(--line);vertical-align:middle;}
+  .subtbl tbody tr:last-child td{border-bottom:none;}
+  .subtbl td.l{font-size:13.5px;color:var(--ink);}
+  .subtbl td.sc{font-size:19px;font-weight:800;color:var(--ink);white-space:nowrap;}
+  /* 先頭の再来店行を見出しとして少し強調 */
+  .subtbl tr.headrow td{background:#E7EEF7;border-bottom:1.5px solid var(--line);padding-top:12px;padding-bottom:12px;}
+  .subtbl tr.headrow td.l{font-weight:800;font-size:15px;}
+  .subtbl tr.headrow td.sc{font-size:23px;}
+  .subtbl td.l .submeta{display:block;font-size:11px;font-weight:400;color:var(--ink-mid);margin-top:2px;}
+  .subtbl td.df{font-size:14px;font-weight:700;white-space:nowrap;}
+  .subtbl td.df.up{color:var(--ok);} .subtbl td.df.down{color:var(--miss);} .subtbl td.df.flat{color:var(--ink-mid);}
+  .subtbl td.tgtcell{font-size:10.5px;color:var(--ink-mid);white-space:nowrap;}
+  .subtbl td.tgtcell input.tin{width:40px;font:inherit;font-size:12px;padding:2px 5px;margin-left:3px;border:1px solid var(--line);border-radius:5px;text-align:right;color:var(--ink);}
+  .tprint{display:none;}
+  /* いちばん低い＝四角タグ、行を淡く強調 */
+  .subtbl tr.low{background:#EFF4FB;}
+  .subtbl tr.low td{border-bottom-color:#D3DEEC;}
+  .subtbl tr.low td.l{font-weight:700;}
+  .lowtag{display:inline-block;white-space:nowrap;font-size:11px;font-weight:700;color:#fff;background:#2F6FB0;border-radius:4px;padding:2px 8px;margin-left:7px;letter-spacing:.02em;vertical-align:1px;}
+  /* 判定バッジ */
+  .jd{display:inline-block;font-size:12px;font-weight:700;border-radius:5px;padding:3px 11px;}
+  .jd.ok{background:#E1EFE8;color:#2E7D5B;}
+  .jd.miss{background:#F6E5E1;color:#C0473A;}
+  .jd.flat{background:var(--tint-gray);color:var(--ink-mid);}
+  .tblfoot{display:flex;justify-content:flex-end;margin-top:8px;}
+  .focus{margin-top:16px;background:var(--tint-amber);border-left:4px solid var(--ember);border-radius:0 8px 8px 0;padding:12px 14px;}
+  .focus .ttl{font-weight:700;font-size:13px;color:var(--ember-deep);margin-bottom:4px;}
+  .focus .read{font-size:13px;color:var(--ink);margin-bottom:8px;line-height:1.5;}
+  .focus ul{margin:0;padding-left:18px;}
+  .focus li{font-size:13px;color:var(--ink);margin-bottom:3px;line-height:1.45;}
+  .voices{margin-top:14px;}
+  .voices .vttl{font-weight:700;font-size:13px;color:var(--ink-mid);margin-bottom:7px;}
+  .vlist{display:flex;flex-wrap:wrap;gap:8px;}
+  .vchip{font-size:12.5px;border:1px solid var(--line);background:var(--tint-gray);border-radius:8px;padding:5px 11px;color:var(--ink);}
+  .vchip b{color:var(--ember-deep);margin-left:2px;}
+  .cgrp{margin-top:9px;}
+  .carea{font-weight:700;font-size:12.5px;color:var(--ember-deep);margin-bottom:3px;}
+  .carea .cn{color:var(--ink-mid);font-weight:400;margin-left:6px;font-size:11.5px;}
+  .clist{margin:0 0 4px;padding-left:18px;}
+  .clist li{font-size:12px;color:var(--ink);line-height:1.45;margin-bottom:2px;}
+  .cx{color:var(--ember);font-weight:700;font-size:11px;}
+  .strong{margin-top:10px;font-size:12.5px;color:var(--ink-mid);}
+  .strong b{color:var(--ok);}
+  .empty{color:var(--ink-mid);font-size:13px;text-align:center;padding:30px;border:1px dashed var(--line);border-radius:12px;}
+  @media print{
+    @page{size:A4 portrait;margin:11mm;}
+    html,body{background:#fff;}
+    .controls,.noprint{display:none!important;}
+    .wrap{max-width:none;padding:0;}
+    h1,.lead,.topbar{display:none;}             /* 印刷は診断本体だけ */
+    .summary{break-inside:avoid;margin:0;}
+    /* 各店は新しいページから開始。コメントが多い店は次ページへ自然に伸びる */
+    .card{page-break-before:always;border:1px solid #ccc;margin:0;padding:14px 18px;}
+    .chead,.subs,.focus,.cgrp{break-inside:avoid;}
+    .tin{display:none!important;} .tprint{display:inline!important;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar"><span class="brand">DOTEPPAN ・ STORE QSC REPORT</span></div>
+  <h1>店舗<span class="amb">診断書</span><span class="h1sub">— 前月振り返り用 —</span></h1>
+  <p class="lead">ダイニーのQSCスコアCSVを読み込むと、各店の診断（ゴール比・前月比・注目点）と、その項目に効くヒントを自動で表示します。各店のチーフ・キャプテンは、この診断書を見ながら「振り返りシート」で前月の振り返りを行ってください。<br>
+  ※これは“答え”ではなく考えるための材料です。最後に決めるのは各店。各項目は「スコア・目標・目標差・判定（達成/未達）」の数値で表示し、一番低い項目にタグを付けています。</p>
+
+  <div class="controls noprint">
+    <input id="file" type="file" accept=".csv" style="display:none" />
+    <button class="btn" onclick="document.getElementById('file').click()">ダイニーのCSVを読み込む</button>
+    <label class="hint">対象月 <input id="month" type="month" class="month" /></label>
+    <button class="btn ghost" onclick="window.print()">全店まとめて印刷</button>
+    <span id="selwrap" style="display:none">
+      <select id="storeSel" class="month"></select>
+      <button class="btn" onclick="printSel()">選んだ店だけ印刷 / PDF</button>
+    </span>
+    <span id="status" class="hint"></span>
+  </div>
+
+  <div class="targets noprint" id="targetPanel">
+    <span class="tlab">目標スコアは各店ごとに設定できます</span>
+    <span class="hint">各店カードの「目標差」欄の数字を直接編集。「この目標を全店に適用」で他店へコピーできます。変更は自動保存されます。</span>
+    <button class="btn ghost reset" onclick="resetAllTargets()">全店を既定値に戻す</button>
+  </div>
+
+  <div id="err" class="err" style="display:none"></div>
+  <div id="out"><div class="empty">CSVを読み込むと、ここに8店舗の診断書が表示されます。</div></div>
+</div>
+
+<script>
+/* ===== 対象8店舗マスタ ===== */
+const STORES=[
+  {id:"tsukishima",code:"001000",jp:"月島本店",romaji:"TSUKISHIMA",area:"東京・月島",block:"関東"},
+  {id:"monnaka",code:"000800",jp:"門前仲町店",romaji:"MONZEN-NAKACHO",area:"東京・門仲",block:"関東"},
+  {id:"hiyoshi",code:"000700",jp:"日吉駅前店",romaji:"HIYOSHI",area:"神奈川・日吉",block:"関東"},
+  {id:"matsudo",code:"000100",jp:"松戸東口店",romaji:"MATSUDO",area:"千葉・松戸",block:"関東"},
+  {id:"maebashi",code:"000500",jp:"前橋店",romaji:"MAEBASHI",area:"群馬・前橋",block:"関東"},
+  {id:"kiyamachi",code:"000900",jp:"京都木屋町店",romaji:"KIYAMACHI",area:"京都・木屋町",block:"関西・札幌"},
+  {id:"ishiyama",code:"000600",jp:"石山駅前店",romaji:"ISHIYAMA",area:"滋賀・石山",block:"関西・札幌"},
+  {id:"sapporo",code:"001200",jp:"札幌すすきの店",romaji:"SAPPORO",area:"北海道・すすきの",block:"関西・札幌"},
+];
+const codeToId=Object.fromEntries(STORES.map(s=>[s.code,s.id]));
+const SUBS=["接客","清潔感","提供速度","料理・味"];
+/* 各項目の目標スコア。店舗ごとに設定でき、localStorageに保存される。 */
+const ITEM_TARGET_DEFAULT={"接客":83,"清潔感":80,"提供速度":75,"料理・味":80};
+const TARGET_KEY="doteppan_qsc_targets_bystore";
+let storeTargets=loadTargets();   // { storeId:{接客:..,清潔感:..,提供速度:..,料理・味:..}, ... }
+function loadTargets(){try{const s=JSON.parse(localStorage.getItem(TARGET_KEY));if(s&&typeof s==="object")return s;}catch(e){}return {};}
+function saveTargets(){try{localStorage.setItem(TARGET_KEY,JSON.stringify(storeTargets));}catch(e){}}
+function getTarget(storeId,item){return (storeTargets[storeId]&&storeTargets[storeId][item]!=null)?storeTargets[storeId][item]:ITEM_TARGET_DEFAULT[item];}
+function setTarget(storeId,item,v){if(!storeTargets[storeId])storeTargets[storeId]={};storeTargets[storeId][item]=v;saveTargets();}
+const COL={name:0,visitedAt:1,revisit:6,"接客":11,"料理・味":17,"提供速度":24,"清潔感":27};
+/* 各エリアの「最も改善が必要な」サブ設問の列（自由回答の改善ポイント集計用） */
+const IMPROVE=[["接客",14],["料理",21],["提供速度",25],["清潔感",28]];
+/* 改善理由の自由記述コメント列（原文転記用）：接客16/料理24/提供速度27/清潔感30（1始まり） */
+const CMT_FIELDS=[["接客",15],["料理",23],["提供速度",26],["清潔感",29]];
+const CMT_SKIP=new Set(["","なし","特になし","特に無し","無し","特にありません","ありません","特にない","とくになし","無","。","."]);
+const TARGET=90;
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));}
+
+/* ===== 項目ごとのヒント（改善ヒント集と同じ内容） ===== */
+const HINTS={
+  "接客":{read:"“やってほしいこと”が伝わっていない・抜けているサイン。多くは商品提供まわりと入店時。",
+    acts:["着席時に「もんじゃはこちらで焼きます／お好みから先に焼きますね」と最初に一声","入店◯秒以内のお迎え＋案内役を1人決める","ピーク中の空き皿バッシング担当と巡回タイミングを決める"]},
+  "清潔感":{read:"鉄板店特有の“油のベタつき”が最大要因。特にテーブル・カウンター。",
+    acts:["退店後に卓上・鉄板まわりを脱脂して拭く担当と手順を決める","メニュー表を1日◯回、油汚れを拭き上げる","ピーク中に卓上・床をチェックする巡回担当を1人決める"]},
+  "提供速度":{read:"主因はフード（もんじゃ/お好み）の提供・焼き始め。ドリンクの初動遅れも。打ち手は1つに絞って確実に。",
+    acts:["ファーストドリンクを最優先で出す（着席後◯分以内）","鉄板もの（もんじゃ/お好み）の着手順をピーク前に決めておく","提供ヌケ防止：注文と提供のチェックを1人が見る"]},
+  "料理・味":{read:"4項目で最も高いことが多い強み。低い時は焼き加減のムラ・味の物足りなさ・薬味不足。",
+    acts:["もんじゃ/お好みの“火を止めるタイミング”の目安を全員で共有","卓上の薬味・調味料を一声で案内","看板メニューの提供品質を定期チェック（価格不満は本部マターとして記録）"]},
+};
+
+/* ===== CSVパース ===== */
+function parseCSV(t){const rows=[];let f="",row=[],q=false,i=0;
+  while(i<t.length){const c=t[i];
+    if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i+=2;continue;}q=false;i++;continue;}f+=c;i++;continue;}
+    if(c==='"'){q=true;i++;continue;}
+    if(c===","){row.push(f);f="";i++;continue;}
+    if(c==="\r"){i++;continue;}
+    if(c==="\n"){row.push(f);rows.push(row);row=[];f="";i++;continue;}
+    f+=c;i++;}
+  if(f!==""||row.length){row.push(f);rows.push(row);}return rows;}
+
+function aggregate(rows){
+  const body=rows.slice(1).filter(r=>r.length>COL["清潔感"]);
+  const by={},mon={};
+  for(const r of body){
+    const m=String(r[COL.name]||"").match(/(\d{6})/);const id=m&&codeToId[m[1]];if(!id)continue;
+    if(!by[id])by[id]={revisit:[],"接客":[],"清潔感":[],"提供速度":[],"料理・味":[],imp:{},cmt:{}};
+    const push=(k,idx)=>{const v=Number(String(r[idx]).trim());if(!isNaN(v)&&String(r[idx]).trim()!=="")by[id][k].push(v);};
+    push("revisit",COL.revisit);push("接客",COL["接客"]);push("清潔感",COL["清潔感"]);push("提供速度",COL["提供速度"]);push("料理・味",COL["料理・味"]);
+    // 改善ポイント（カテゴリ設問）を集計
+    for(const [area,idx] of IMPROVE){
+      let v=String(r[idx]||"").trim();
+      if(!v||v==="なし"||v==="特になし"||v==="特に無し")continue;
+      if(v.startsWith("その他"))v="その他";
+      const tag=area+"・"+v;
+      by[id].imp[tag]=(by[id].imp[tag]||0)+1;
+    }
+    // 改善コメント（自由記述）を原文で収集
+    for(const [area,idx] of CMT_FIELDS){
+      let v=String(r[idx]||"").replace(/\s+/g," ").trim();
+      const norm=v.replace(/[　\s。.、,!！?？]/g,"");
+      if(CMT_SKIP.has(norm)||/^(特に|とくに)?(は)?(ない|無い|なし|ありません|なかった)$/.test(norm)||v.length<3)continue;
+      (by[id].cmt[area]=by[id].cmt[area]||[]).push(v);
+    }
+    const dm=String(r[COL.visitedAt]||"").match(/(\d{4})\/(\d{2})/);if(dm){const ym=dm[1]+"-"+dm[2];mon[ym]=(mon[ym]||0)+1;}
+  }
+  const avg=a=>a.length?Math.round(a.reduce((x,y)=>x+y,0)/a.length*10)/10:null;
+  const res={};
+  for(const id in by){const d=by[id];
+    const comments=Object.entries(d.cmt).map(([area,arr])=>{
+      const m=new Map();arr.forEach(t=>m.set(t,(m.get(t)||0)+1));
+      const items=[...m.entries()].map(([text,count])=>({text,count})).sort((a,b)=>b.count-a.count);
+      return {area,items,total:arr.length};
+    }).sort((a,b)=>b.total-a.total);
+    res[id]={revisit:avg(d.revisit),"接客":avg(d["接客"]),"清潔感":avg(d["清潔感"]),"提供速度":avg(d["提供速度"]),"料理・味":avg(d["料理・味"]),n:d.revisit.length,imp:Object.entries(d.imp).sort((a,b)=>b[1]-a[1]),comments};}
+  const ym=Object.entries(mon).sort((a,b)=>b[1]-a[1])[0]?.[0]||"";
+  return {res,ym};
+}
+
+/* ===== 前月スナップショット（localStorage） ===== */
+const SNAP_KEY="doteppan_qsc_snapshots";
+function loadSnaps(){try{return JSON.parse(localStorage.getItem(SNAP_KEY)||"{}");}catch(e){return {};}}
+function saveSnap(ym,res){const s=loadSnaps();s[ym]=res;localStorage.setItem(SNAP_KEY,JSON.stringify(s));}
+function prevYM(ym){const[y,m]=ym.split("-").map(Number);let yy=y,mm=m-1;if(mm===0){mm=12;yy--;}return yy+"-"+String(mm).padStart(2,"0");}
+
+/* ===== レンダリング ===== */
+function render(res,ym){
+  window.__lastRes=res; window.__lastYm=ym;   // 目標変更時の再描画用に保持
+  const out=document.getElementById("out");
+  const ids=STORES.map(s=>s.id).filter(id=>res[id]);
+  if(!ids.length){out.innerHTML='<div class="empty">対象8店舗のデータが見つかりませんでした。</div>';return;}
+
+  // 全店平均（店舗平均の平均）
+  const allAvg={};["revisit",...SUBS].forEach(k=>{
+    const vs=ids.map(id=>res[id][k]).filter(v=>v!=null);
+    allAvg[k]=vs.length?Math.round(vs.reduce((a,b)=>a+b,0)/vs.length*10)/10:null;
+  });
+  const cleared=ids.filter(id=>res[id].revisit!=null&&res[id].revisit>=TARGET).length;
+
+  // 前月
+  const snaps=loadSnaps();const prev=snaps[prevYM(ym)];
+
+  // サマリー
+  let html='<div class="summary"><h2>'+fmtYM(ym)+' ・ 全店サマリー</h2><div class="sgrid">';
+  html+=stat("全店平均（再来店）",allAvg.revisit,"/ "+TARGET);
+  html+=stat("90点クリア",cleared,"/ "+ids.length+"店");
+  html+=stat("回答数 合計",ids.reduce((a,id)=>a+(res[id].n||0),0),"件");
+  html+='</div><div class="savg">';
+  SUBS.forEach(k=>{html+='<span class="chip">'+k+' 全店平均 <b>'+(allAvg[k]??"–")+'</b></span>';});
+  // 最弱項目
+  const weak=SUBS.filter(k=>allAvg[k]!=null).sort((a,b)=>allAvg[a]-allAvg[b])[0];
+  if(weak)html+='<span class="chip" style="border-color:var(--ember);color:var(--ember-deep)">全店で一番低い：<b>'+weak+'</b></span>';
+  html+='</div></div>';
+
+  // 店舗カード（ブロック順）
+  ["関東","関西・札幌"].forEach(block=>{
+    STORES.filter(s=>s.block===block&&res[s.id]).forEach(s=>{
+      html+=card(s,res[s.id],allAvg,prev&&prev[s.id]);
+    });
+  });
+  out.innerHTML=html;
+
+  // 店舗選択（1店だけ印刷用）を用意
+  const sel=document.getElementById("storeSel");
+  sel.innerHTML="";
+  STORES.filter(s=>res[s.id]).forEach(s=>{
+    const o=document.createElement("option");o.value=s.id;o.textContent=s.jp;sel.appendChild(o);
+  });
+  document.getElementById("selwrap").style.display="inline";
+}
+
+/* 1店だけ印刷 / PDF出力 */
+function printStore(id){
+  const card=document.querySelector('.card[data-store="'+id+'"]');
+  if(!card){alert("対象店舗が見つかりません："+id);return;}
+  const store=(STORES.find(s=>s.id===id)||{}).jp||"";
+  const styles=document.querySelector("style").innerHTML;
+  // 対象店カードを複製し、印刷ボタンなどは除去
+  const clone=card.cloneNode(true);
+  clone.querySelectorAll(".noprint").forEach(b=>b.remove());
+  // 非表示iframeに「その店だけ」を描画して印刷（対象店だけが確実に出る方式）
+  const ifr=document.createElement("iframe");
+  ifr.setAttribute("aria-hidden","true");
+  // 画面外・A4印刷幅相当（210mm-余白22mm≒188mm≒710px @96dpi）で実レイアウトさせる
+  ifr.style.cssText="position:fixed;left:-10000px;top:0;width:710px;height:1120px;border:0;background:#fff;";
+  document.body.appendChild(ifr);
+  const doc=ifr.contentWindow.document;
+  doc.open();
+  doc.write('<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><title>'+esc(store)+' 店舗診断書</title>'
+    +'<style>'+styles+'</style>'
+    +'<style>@page{size:A4 portrait;margin:11mm;} html,body{background:#fff;margin:0;padding:0;} '
+    +'.wrap{max-width:none!important;margin:0!important;padding:0!important;} '
+    +'.card{page-break-before:auto!important;border:1px solid #ccc;margin:0;} .noprint{display:none!important;}</style>'
+    +'</head><body><div class="wrap">'+clone.outerHTML+'</div></body></html>');
+  doc.close();
+  ifr.onload=function(){
+    try{ ifr.contentWindow.focus(); ifr.contentWindow.print(); }
+    catch(e){ alert("印刷に失敗しました："+e); }
+    setTimeout(function(){ ifr.remove(); }, 1000);
+  };
+}
+function printSel(){const id=document.getElementById("storeSel").value;if(id)printStore(id);}
+
+/* 目標スコアの設定（店舗ごと） */
+function rerender(){ if(window.__lastRes) render(window.__lastRes,window.__lastYm); }
+function applyStoreTarget(el){
+  const sid=el.getAttribute("data-store"), item=el.getAttribute("data-item");
+  let v=Number(el.value);
+  if(isNaN(v)){ el.value=getTarget(sid,item); return; }
+  v=Math.max(0,Math.min(100,v));
+  setTarget(sid,item,v);
+  rerender();
+}
+function applyToAll(srcId){
+  if(!confirm(((STORES.find(s=>s.id===srcId)||{}).jp||"この店")+"の目標を全店に適用します。よろしいですか？"))return;
+  SUBS.forEach(k=>{ const v=getTarget(srcId,k); STORES.forEach(s=>setTarget(s.id,k,v)); });
+  rerender();
+}
+function resetAllTargets(){
+  if(!confirm("全店の目標を既定値に戻します。よろしいですか？"))return;
+  storeTargets={}; saveTargets(); rerender();
+}
+
+function stat(k,v,u){return '<div class="stat"><div class="k">'+k+'</div><div class="v">'+(v==null?"–":v)+' <span class="u">'+u+'</span></div></div>';}
+function fmtYM(ym){if(!ym)return "";const[y,m]=ym.split("-");return y+"年"+Number(m)+"月";}
+
+function card(s,rec,allAvg,prevRec){
+  const rv=rec.revisit, hit=rv!=null&&rv>=TARGET;
+  const prevRv=prevRec?prevRec.revisit:null;
+  const delta=(rv!=null&&prevRv!=null)?Math.round((rv-prevRv)*10)/10:null;
+  // 並べ替え：低い順
+  const ranked=SUBS.map(k=>({k,v:rec[k]})).filter(o=>o.v!=null).sort((a,b)=>a.v-b.v);
+  const low1=ranked[0]?.k, low2=ranked[1]?.k, high=ranked[ranked.length-1]?.k;
+
+  let h='<div class="card" data-store="'+s.id+'"><div class="chead"><div>'
+    +'<div class="cardlabel">店舗診断書 ・ 前月振り返り</div>'
+    +'<div class="name">'+s.jp+'</div><div class="rom">'+s.romaji+'</div></div>'
+    +'<div class="meta">'+s.area+'<br>回答 '+(rec.n||0)+'件 ・ '+s.block+(hit?'<br><span class="clear">90 CLEAR</span>':'')
+    +'<br><button class="btn mini noprint" onclick="printStore(\''+s.id+'\')">この店だけ PDF / 印刷</button></div></div>';
+
+  // 再来店（最大点スコア）＋4項目を1つの数値テーブルに
+  h+='<table class="subtbl"><thead><tr>'
+    +'<th class="l">項目</th><th class="r">スコア</th><th class="r">目標</th><th class="r">目標差</th><th class="r">判定</th>'
+    +'</tr></thead><tbody>';
+  // 先頭行：再来店（ゴール90）
+  {
+    const v=rv, tdiff=(v!=null)?Math.round((v-TARGET)*10)/10:null;
+    const cls=tdiff==null?"flat":tdiff>=0?"up":"down";
+    const tdtxt=tdiff==null?"–":(tdiff>0?"+":"")+tdiff;
+    const badge=v==null?'<span class="jd flat">–</span>':(v>=TARGET?'<span class="jd ok">達成</span>':'<span class="jd miss">未達</span>');
+    let meta='全店平均 '+(allAvg.revisit??"–");
+    if(delta!=null)meta='前月比 '+(delta>0?"▲":delta<0?"▼":"±")+Math.abs(delta)+' ／ '+meta;
+    h+='<tr class="headrow">'
+      +'<td class="l">再来店<span class="submeta">'+meta+'</span></td>'
+      +'<td class="r sc" style="color:'+(hit?"#2E7D5B":"#1F3864")+'">'+(v??"–")+'</td>'
+      +'<td class="r tgtcell"><b>'+TARGET+'</b></td>'
+      +'<td class="r df '+cls+'">'+tdtxt+'</td>'
+      +'<td class="r">'+badge+'</td></tr>';
+  }
+  SUBS.forEach(k=>{
+    const v=rec[k], isLow=k===low1;
+    const tgt=getTarget(s.id,k);
+    const tdiff=(v!=null&&tgt!=null)?Math.round((v-tgt)*10)/10:null;
+    const cls=tdiff==null?"flat":tdiff>=0?"up":"down";
+    const tdtxt=tdiff==null?"–":(tdiff>0?"+":"")+tdiff;
+    const pass=v!=null&&tgt!=null&&v>=tgt;
+    const badge=v==null?'<span class="jd flat">–</span>':(pass?'<span class="jd ok">達成</span>':'<span class="jd miss">未達</span>');
+    h+='<tr class="'+(isLow?'low':'')+'">'
+      +'<td class="l">'+k+(isLow?' <span class="lowtag">いちばん低い</span>':'')+'</td>'
+      +'<td class="r sc">'+(v??"–")+'</td>'
+      +'<td class="r tgtcell">目標<input class="tin noprint" type="number" min="0" max="100" value="'+tgt+'" data-store="'+s.id+'" data-item="'+k+'" onchange="applyStoreTarget(this)" /><b class="tprint">'+tgt+'</b></td>'
+      +'<td class="r df '+cls+'">'+tdtxt+'</td>'
+      +'<td class="r">'+badge+'</td></tr>';
+  });
+  h+='</tbody></table>';
+  h+='<div class="tblfoot noprint"><button class="btn ghost mini" onclick="applyToAll(\''+s.id+'\')">この目標を全店に適用</button></div>';
+
+  // お客様の改善コメント（原文ママ・項目ごと多い順）
+  if(rec.comments&&rec.comments.length){
+    h+='<div class="voices"><div class="vttl">お客様の改善コメント（多い順・原文ママ）</div>';
+    rec.comments.forEach(g=>{
+      h+='<div class="cgrp"><div class="carea">'+g.area+'<span class="cn">'+g.total+'件</span></div><ul class="clist">';
+      g.items.forEach(it=>{h+='<li>'+esc(it.text)+(it.count>1?' <span class="cx">×'+it.count+'</span>':'')+'</li>';});
+      h+='</ul></div>';
+    });
+    h+='</div>';
+  }
+
+  // 注目点＋ヒント
+  if(low1){
+    const hint=HINTS[low1];
+    h+='<div class="focus"><div class="ttl">注目点：'+low1+'（4項目で一番低い'+(low2?' ／ 次に低い：'+low2:'')+'）</div>';
+    h+='<div class="read">'+hint.read+'</div>';
+    h+='<ul>'+hint.acts.map(a=>'<li>'+a+'</li>').join('')+'</ul></div>';
+  }
+  if(high)h+='<div class="strong">強み：<b>'+high+'（'+rec[high]+'点）</b> ── 落とさないよう、いい動作は続ける。</div>';
+
+  h+='</div>';
+  return h;
+}
+
+/* ===== ファイル読み込み ===== */
+document.getElementById("file").addEventListener("change",async e=>{
+  const file=e.target.files[0];if(!file)return;
+  const err=document.getElementById("err");err.style.display="none";
+  try{
+    const buf=await file.arrayBuffer();
+    let text;try{text=new TextDecoder("shift_jis",{fatal:false}).decode(buf);}catch(x){text=new TextDecoder("utf-8").decode(buf);}
+    const rows=parseCSV(text);
+    const {res,ym}=aggregate(rows);
+    if(!Object.keys(res).length){err.textContent="対象8店舗のデータが見つかりませんでした。ダイニーの元CSVかご確認ください。";err.style.display="block";return;}
+    const useYm=document.getElementById("month").value||ym;
+    document.getElementById("month").value=useYm;
+    render(res,useYm);
+    saveSnap(useYm,res); // 翌月の前月比のために保存
+    document.getElementById("status").textContent="読み込み完了："+fmtYM(useYm)+" / "+Object.keys(res).length+"店";
+  }catch(x){err.textContent="読み込みに失敗しました："+x;err.style.display="block";}
+});
+</script>
+</body>
+</html>
