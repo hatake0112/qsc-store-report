@@ -64,7 +64,7 @@ h1 .accent { color: var(--bingata-red); }
 /* Bookings */
 .bookings { display: grid; gap: 12px; }
 .bookings > h2, .alerts > h2, .notes > h2 { font-size: 22px; font-weight: 900; }
-.bk-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.bk-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .bk {
   background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
   padding: 14px 16px; display: grid; gap: 8px; align-content: start; min-width: 0;
@@ -208,6 +208,13 @@ footer { font-size: 12px; color: var(--muted); }
           <dt>支払</dt><dd>32,920円<br><span class="sub">現地で「ポイント／クーポン利用」と伝える</span></dd>
         </dl>
       </div>
+      <div class="bk">
+        <h3>夜ごはん</h3>
+        <dl class="num">
+          <dt>11/5</dt><dd>長堂屋 那覇店 18:30〜<br><span class="sub">予約 R669RV385Z・4名（子ども2名）・半個室・2時間<br>お通し700円＋サービス料5%</span></dd>
+          <dt>11/6</dt><dd>ぱいかじ 国際通り店 18:00〜<br><span class="sub">予約 SE5873034・4名・テーブル席<br>098-868-8557</span></dd>
+        </dl>
+      </div>
     </div>
   </section>
 
@@ -223,8 +230,8 @@ footer { font-size: 12px; color: var(--muted); }
       <p>返却を17:00ごろに延長できないか店舗に聞いてみる価値があります。延長できれば、3日目の午後に空港近くでもう1か所寄れます。下の旅程は15:00返却のままで組んでいます。</p>
     </div>
     <div class="alert mild">
-      <h3>夜ごはんの2軒は予約を</h3>
-      <p>11/5（木）アグーしゃぶしゃぶの長堂屋 那覇店（個室希望と伝える）と、11/6（金）のぱいかじ 国際通り店。金曜の夜は混むので早めに。どちらもお酒を飲むなら行き帰りはタクシーで。</p>
+      <h3>長堂屋のクーポンは使えないかも</h3>
+      <p>予約に付いた「今帰仁アグーの肉四種盛 1人前サービス」は、条件が「大人4名以上・コース予約」です。今回は大人2名・コース指定なしなので、当日は使えない前提で。お店に一度聞いてみてもいいです。どちらの夜もお酒を飲むなら行き帰りはタクシーで。</p>
     </div>
     <div class="alert mild">
       <h3>ホテルの駐車場は予約できません</h3>
@@ -312,14 +319,15 @@ footer { font-size: 12px; color: var(--muted); }
         </div>
       </li>
       <li class="drive"><span>タクシー 約15分</span></li>
-      <li class="stop main">
-        <div class="time">18:00</div>
+      <li class="stop main fixed">
+        <div class="time">18:30</div>
         <div class="card">
-          <span class="tag">行きたい・要予約</span>
+          <span class="tag">予約済み</span>
           <h3>今帰仁アグーしゃぶしゃぶ 長堂屋 那覇店</h3>
+          <p>予約番号 R669RV385Z。4名（うち子ども2名）、半個室（禁煙）、滞在は2時間（20:30まで）。お会計は当日で、お通し700円とサービス料5%がかかります。</p>
           <p>今帰仁村に本店がある今帰仁アグーの専門店。本店ではシークワーサーと島とうがらしの薬味を添えた<b>ポン酢</b>で食べるスタイルです。</p>
-          <p>那覇市安里（安里駅・牧志駅から徒歩5分、ライオンズマンション安里1階）。18:00〜23:00（料理のラストオーダー22:00）。ホットペッパーから予約できます。</p>
-          <div class="kid"><b>子ども：</b>子連れ・赤ちゃんOK。掘りごたつの完全個室（4〜6名）があるので、予約のときに個室希望と子どもの年齢を伝えましょう。</div>
+          <p>那覇市安里（安里駅・牧志駅から徒歩5分、ライオンズマンション安里1階）。18:00〜23:00（料理のラストオーダー22:00）。</p>
+          <div class="kid"><b>子ども：</b>子連れ・赤ちゃんOKのお店です。</div>
         </div>
       </li>
     </ol>
@@ -383,21 +391,22 @@ footer { font-size: 12px; color: var(--muted); }
       </li>
       <li class="drive"><span>車 約1時間20分（許田IC → 那覇IC）</span></li>
       <li class="stop">
-        <div class="time">17:30</div>
+        <div class="time">17:00</div>
         <div class="card">
           <h3>ホテルに戻ってひと休み</h3>
-          <p>車はホテルに置いておきます。帰り道は子どもが寝てしまいがちなので、こまめに休憩を。</p>
+          <p>18:00の予約に間に合うよう、古宇利島は15:40ごろに出発。17:40ごろタクシーで出かけます。車はホテルに置いておきます。帰り道は子どもが寝てしまいがちなので、こまめに休憩を。</p>
         </div>
       </li>
       <li class="drive"><span>タクシー 約15分</span></li>
       <li class="stop main">
-        <div class="time">18:30</div>
+        <div class="time">18:00</div>
         <div class="card">
-          <span class="tag">行きたい・要予約</span>
+          <span class="tag">予約済み</span>
           <h3>沖縄の台所 ぱいかじ 国際通り店</h3>
+          <p>予約番号 SE5873034。4名、テーブル席（禁煙）、席のみの予約で料理は当日注文。お店の電話 098-868-8557。</p>
           <p>沖縄料理と生の三線民謡ライブ。ステージの最後はお客さんも立ち上がって一緒にカチャーシーを踊るのが定番です。</p>
           <p>那覇市久茂地3-29-68 2階（国際通り沿い・県庁前駅から徒歩約5分）。17:00〜24:00。ライブは19:30ごろと、全21:00ごろ（18:30の回があるという情報もあるので予約時に確認）。予算は1人4,000円くらい。</p>
-          <div class="kid"><b>子ども：</b>座敷席があり、小さい子連れでも使いやすいお店です。予約のメッセージ欄に子どもの人数を書き、「ステージから少し離れた座敷」をお願いしておくと安心。最初のステージを1回見て、20:30ごろに帰るのが目安です。</div>
+          <div class="kid"><b>子ども：</b>予約はテーブル席です。座敷のほうが楽なら、電話で「子ども2人連れなので座敷にできますか、ステージから少し離れた席だと助かります」と伝えておくと安心。子ども用の椅子があるかも聞いておくといいです。最初のステージを1回見て、20:30ごろに帰るのが目安です。</div>
         </div>
       </li>
     </ol>
