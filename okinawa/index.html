@@ -4,7 +4,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=BIZ+UDPGothic:wght@400;700&display=swap">
 <style>
-/* Layout: 一枚の縦長しおり。日ごとに時刻レール付きのタイムライン、運転時間は区間チップで表示 */
+/* Layout: 一枚の縦長しおり。予約まとめ → 要確認 → 日ごとの時刻レール付きタイムライン */
 :root {
   --bg: #f7fbfb;
   --surface: #ffffff;
@@ -14,7 +14,8 @@
   --sea: #0a7e8c;
   --sea-soft: #dff3f4;
   --bingata-red: #c8323c;
-  --sun: #f2b31b;
+  --red-soft: #fde8e9;
+  --sun: #d99a00;
   --sun-soft: #fff3d1;
   --display: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "BIZ UDPGothic", sans-serif;
   --body: "BIZ UDPGothic", "Hiragino Sans", "Noto Sans JP", sans-serif;
@@ -22,13 +23,15 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #0c1d21; --surface: #12292e; --fg: #e3f1f2; --muted: #9bb8bd; --line: #24444a;
-    --sea: #4fc6d3; --sea-soft: #133a40; --bingata-red: #f0727a; --sun: #f5c451; --sun-soft: #3a3016;
+    --sea: #4fc6d3; --sea-soft: #133a40; --bingata-red: #f0727a; --red-soft: #3d1c20;
+    --sun: #f5c451; --sun-soft: #3a3016;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #0c1d21; --surface: #12292e; --fg: #e3f1f2; --muted: #9bb8bd; --line: #24444a;
-  --sea: #4fc6d3; --sea-soft: #133a40; --bingata-red: #f0727a; --sun: #f5c451; --sun-soft: #3a3016;
+  --sea: #4fc6d3; --sea-soft: #133a40; --bingata-red: #f0727a; --red-soft: #3d1c20;
+  --sun: #f5c451; --sun-soft: #3a3016;
   color-scheme: dark;
 }
 
@@ -44,6 +47,7 @@ body {
   display: grid; gap: 40px;
 }
 h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.3; }
+.num { font-variant-numeric: tabular-nums; }
 
 /* Header */
 header { display: grid; gap: 14px; }
@@ -56,6 +60,30 @@ h1 .accent { color: var(--bingata-red); }
   background: var(--sea-soft); color: var(--fg); border-radius: 999px;
   padding: 4px 12px; font-size: 13px; font-weight: 700;
 }
+
+/* Bookings */
+.bookings { display: grid; gap: 12px; }
+.bookings > h2, .alerts > h2, .notes > h2 { font-size: 22px; font-weight: 900; }
+.bk-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.bk {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+  padding: 14px 16px; display: grid; gap: 8px; align-content: start; min-width: 0;
+}
+.bk h3 { font-size: 15px; color: var(--sea); }
+.bk dl { margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2px 10px; font-size: 13px; line-height: 1.6; }
+.bk dt { color: var(--muted); white-space: nowrap; }
+.bk dd { margin: 0; font-weight: 700; overflow-wrap: anywhere; }
+.bk .sub { font-weight: 400; color: var(--muted); }
+
+/* Alerts */
+.alerts { display: grid; gap: 12px; }
+.alert {
+  border-radius: 12px; padding: 12px 16px; display: grid; gap: 4px;
+  background: var(--red-soft); border-left: 4px solid var(--bingata-red);
+}
+.alert.mild { background: var(--sun-soft); border-left-color: var(--sun); }
+.alert h3 { font-size: 15px; }
+.alert p { margin: 0; font-size: 14px; }
 
 /* Route overview */
 .route { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
@@ -93,16 +121,18 @@ h1 .accent { color: var(--bingata-red); }
   border-radius: 50%; background: var(--bg); border: 2px solid var(--c);
 }
 .stop.main .card::before { background: var(--c); }
+.stop.fixed .time { color: var(--fg); }
 .card h3 { font-size: 17px; font-weight: 700; }
 .card p { margin: 0; }
+.tag {
+  justify-self: start; font-size: 11px; font-weight: 700; letter-spacing: .06em;
+  color: var(--sea); border: 1px solid var(--sea); border-radius: 4px; padding: 0 6px;
+}
 .kid {
   margin-top: 4px; background: var(--sun-soft); border-radius: 8px;
   padding: 6px 10px; font-size: 13px; line-height: 1.6;
 }
-.kid b { color: var(--fg); }
-.drive {
-  display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 14px;
-}
+.drive { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 14px; }
 .drive span {
   grid-column: 2; justify-self: start; margin-left: -10px;
   font-size: 12px; color: var(--sea); font-weight: 700;
@@ -112,7 +142,6 @@ h1 .accent { color: var(--bingata-red); }
 
 /* Notes */
 .notes { display: grid; gap: 14px; }
-.notes h2 { font-size: 22px; font-weight: 900; }
 .grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .box {
   background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
@@ -122,6 +151,9 @@ h1 .accent { color: var(--bingata-red); }
 .box ul { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; font-size: 14px; }
 footer { font-size: 12px; color: var(--muted); }
 
+@media (max-width: 640px) {
+  .bk-grid { grid-template-columns: 1fr; }
+}
 @media (max-width: 560px) {
   .route { grid-template-columns: 1fr; }
   .grid2 { grid-template-columns: 1fr; }
@@ -132,49 +164,118 @@ footer { font-size: 12px; color: var(--muted); }
 
 <div class="wrap">
   <header>
-    <div class="eyebrow">OKINAWA ・ 本島ドライブ</div>
+    <div class="eyebrow">OKINAWA ・ 2026.11.5 – 11.7</div>
     <h1>沖縄 家族旅 <span class="accent">2泊3日</span></h1>
-    <p class="lead">那覇空港でレンタカーを借りて、中部 → 北部 → 南部と本島をぐるっと回る旅程です。宿は恩納村に2連泊にして、子連れでも荷物の詰め直しを減らしています。</p>
+    <p class="lead">那覇・首里のホテルに2連泊して、レンタカーで毎日出かける旅程です。2日目に北部（美ら海水族館・古宇利島）へ日帰りし、1日目と3日目は那覇周辺でゆったり過ごします。</p>
     <ul class="facts">
-      <li>レンタカー</li>
-      <li>宿：恩納村 2連泊</li>
-      <li>総運転 約6〜7時間</li>
+      <li>大人2・子ども2</li>
+      <li>ハリアー（ETC・ナビ付）</li>
+      <li>宿：那覇 首里 2連泊</li>
       <li>雨の日プランつき</li>
     </ul>
   </header>
 
+  <!-- Bookings -->
+  <section class="bookings">
+    <h2>予約まとめ</h2>
+    <div class="bk-grid">
+      <div class="bk">
+        <h3>飛行機（ピーチ）</h3>
+        <dl class="num">
+          <dt>行き</dt><dd>11/5(木) MM211<br><span class="sub">関西T2 7:40 → 那覇 10:05</span></dd>
+          <dt>帰り</dt><dd>11/7(土) MM218<br><span class="sub">那覇 18:55 → 関西T2 20:50</span></dd>
+          <dt>予約</dt><dd>Trip.com 1385437264870380<br><span class="sub">PNR 行き D2KE55／帰り 2EGE5J</span></dd>
+        </dl>
+      </div>
+      <div class="bk">
+        <h3>レンタカー（ユニバース）</h3>
+        <dl class="num">
+          <dt>貸出</dt><dd>11/5(木) 11:00</dd>
+          <dt>返却</dt><dd>11/7(土) 15:00</dd>
+          <dt>店舗</dt><dd>那覇空港店<br><span class="sub">豊見城市伊良波518-1<br>0120-773-001</span></dd>
+          <dt>予約</dt><dd>R0HZC3ZK</dd>
+          <dt>車両</dt><dd>ハリアー<br><span class="sub">満タン返し不要・免責補償＋NOC</span></dd>
+        </dl>
+      </div>
+      <div class="bk">
+        <h3>ホテル</h3>
+        <dl class="num">
+          <dt>宿</dt><dd>インフィニシス 那覇 首里城 by ヒューイットリゾート</dd>
+          <dt>住所</dt><dd><span class="sub">那覇市松川40<br>098-887-1111</span></dd>
+          <dt>日程</dt><dd>11/5 IN 15:00〜<br>11/7 OUT 〜11:00</dd>
+          <dt>予約</dt><dd>08N9QKNR</dd>
+          <dt>部屋</dt><dd>デラックスツイン・朝食付</dd>
+          <dt>支払</dt><dd>32,920円<br><span class="sub">現地で「ポイント／クーポン利用」と伝える</span></dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- Alerts -->
+  <section class="alerts">
+    <h2>出発前に確認すること</h2>
+    <div class="alert">
+      <h3>レンタカーにチャイルドシートが入っていません</h3>
+      <p>予約のオプションはナビ・ETC・Bluetoothのみです。6歳未満はチャイルドシートが法律で必要なので、あおいちゃん用のベビーシートと、ひなたちゃんの年齢に合うシートを那覇空港店（0120-773-001）に電話して追加してください。</p>
+    </div>
+    <div class="alert mild">
+      <h3>返却15:00から出発18:55まで約4時間あきます</h3>
+      <p>返却を17:00ごろに延長できないか店舗に聞いてみる価値があります。延長できれば、3日目の午後に空港近くでもう1か所寄れます。下の旅程は15:00返却のままで組んでいます。</p>
+    </div>
+    <div class="alert mild">
+      <h3>ホテルの駐車場は予約できません</h3>
+      <p>1泊2,000円で出し入れ自由（2泊で4,000円）。満車のときは条件が変わることがあるので、チェックイン時に確認を。</p>
+    </div>
+  </section>
+
   <nav class="route" aria-label="日ごとの行き先">
     <a href="#day1" style="--c: var(--sea)">
-      <span class="d">1日目</span>
-      <span class="t">那覇 → 北谷 → 恩納村</span>
+      <span class="d">11/5（木）</span>
+      <span class="t">那覇空港 → 北谷 → 首里</span>
       <span class="s">瀬長島・アメリカンビレッジ</span>
     </a>
     <a href="#day2" style="--c: var(--bingata-red)">
-      <span class="d">2日目</span>
-      <span class="t">恩納村 ⇄ 本部・今帰仁</span>
+      <span class="d">11/6（金）</span>
+      <span class="t">首里 ⇄ 本部・今帰仁</span>
       <span class="s">美ら海水族館・古宇利島</span>
     </a>
     <a href="#day3" style="--c: var(--sun)">
-      <span class="d">3日目</span>
-      <span class="t">恩納村 → 那覇空港</span>
-      <span class="s">万座毛・国際通り</span>
+      <span class="d">11/7（土）</span>
+      <span class="t">首里 → 那覇空港</span>
+      <span class="s">首里城・国際通り・豊崎</span>
     </a>
   </nav>
 
   <!-- Day 1 -->
   <section class="day" id="day1" style="--c: var(--sea)">
     <div class="day-head">
-      <span class="day-no">1日目</span>
-      <h2>到着してゆっくり中部へ</h2>
-      <span class="stay">宿泊：恩納村のリゾートホテル（2連泊）</span>
+      <span class="day-no">11/5 木</span>
+      <h2>到着して中部へ、夕方ホテルへ</h2>
+      <span class="stay">宿泊：インフィニシス 那覇 首里城（1泊目）</span>
     </div>
     <ol class="timeline">
-      <li class="stop main">
-        <div class="time">10:30</div>
+      <li class="stop fixed">
+        <div class="time">7:40</div>
         <div class="card">
-          <h3>那覇空港 到着・レンタカー受け取り</h3>
-          <p>送迎バスで営業所へ移動します。混む日は手続きまで1時間ほどかかることもあります。</p>
-          <div class="kid"><b>子ども：</b>6歳未満はチャイルドシートが必要です。予約時に年齢に合うもの（ベビー／チャイルド／ジュニア）を指定しておきます。</div>
+          <span class="tag">予約済み</span>
+          <h3>関西空港T2 発（MM211）</h3>
+          <p>出発の1時間30分前（6:10）までに空港へ。ベビーカーはカウンターで預けます。</p>
+        </div>
+      </li>
+      <li class="stop main fixed">
+        <div class="time">10:05</div>
+        <div class="card">
+          <span class="tag">予約済み</span>
+          <h3>那覇空港 到着</h3>
+          <p>荷物を受け取ったら、レンタカー各社の送迎バス乗り場からユニバースレンタカーのバスへ。</p>
+        </div>
+      </li>
+      <li class="stop main fixed">
+        <div class="time">11:00</div>
+        <div class="card">
+          <span class="tag">予約済み</span>
+          <h3>レンタカー受け取り（那覇空港店）</h3>
+          <p>予約番号 R0HZC3ZK。チャイルドシートの取り付けをここで確認します。</p>
         </div>
       </li>
       <li class="drive"><span>車 約15分</span></li>
@@ -182,25 +283,26 @@ footer { font-size: 12px; color: var(--muted); }
         <div class="time">12:00</div>
         <div class="card">
           <h3>瀬長島ウミカジテラスでランチ</h3>
-          <p>白い建物が並ぶ海沿いのテラス。飛行機の離着陸が間近に見えます。</p>
-          <div class="kid"><b>子ども：</b>階段が多いのでベビーカーより抱っこひもが楽です。</div>
+          <p>海沿いに白い建物が並ぶテラス。飛行機の離着陸が目の前で見られます。</p>
+          <div class="kid"><b>子ども：</b>階段が多いので、ここはベビーカーより抱っこひもが楽です。</div>
         </div>
       </li>
-      <li class="drive"><span>車 約45分（国道58号は渋滞しやすい）</span></li>
+      <li class="drive"><span>車 約45分（国道58号は混みやすい）</span></li>
       <li class="stop main">
-        <div class="time">14:30</div>
+        <div class="time">14:00</div>
         <div class="card">
           <h3>北谷 アメリカンビレッジ</h3>
-          <p>観覧車のあるショッピングエリア。散策とおやつに。ブルーシールアイスはここで。</p>
-          <div class="kid"><b>子ども：</b>すぐ隣のサンセットビーチは遊歩道があり、海を見ながら歩けます。</div>
+          <p>観覧車のあるショッピングエリアを散策。ブルーシールアイスでおやつ。隣のサンセットビーチは遊歩道があり、海を見ながら歩けます。</p>
         </div>
       </li>
       <li class="drive"><span>車 約40分</span></li>
-      <li class="stop">
+      <li class="stop fixed">
         <div class="time">17:00</div>
         <div class="card">
-          <h3>恩納村のホテルにチェックイン</h3>
-          <p>夕日は西側の海に沈みます。夕食はホテルか近くの食堂で早めに。</p>
+          <span class="tag">予約済み</span>
+          <h3>ホテルにチェックイン</h3>
+          <p>予約番号 08N9QKNR。夕食なしのプランなので、館内レストランか国際通り方面（車で15分ほど）で。</p>
+          <div class="kid"><b>子ども：</b>館内にキッズクラブと授乳室があります。</div>
         </div>
       </li>
     </ol>
@@ -209,32 +311,32 @@ footer { font-size: 12px; color: var(--muted); }
   <!-- Day 2 -->
   <section class="day" id="day2" style="--c: var(--bingata-red)">
     <div class="day-head">
-      <span class="day-no">2日目</span>
-      <h2>美ら海水族館と古宇利島</h2>
-      <span class="stay">宿泊：恩納村（同じホテル）</span>
+      <span class="day-no">11/6 金</span>
+      <h2>北部へ日帰り 美ら海水族館と古宇利島</h2>
+      <span class="stay">宿泊：インフィニシス 那覇 首里城（2泊目）／運転がいちばん長い日</span>
     </div>
     <ol class="timeline">
       <li class="stop">
-        <div class="time">8:00</div>
+        <div class="time">7:00</div>
         <div class="card">
-          <h3>ホテルを出発</h3>
-          <p>水族館は開館直後が空いています。朝食は早めに。</p>
+          <h3>ホテルで朝食ビュッフェ</h3>
+          <p>2F「アヴァンセ」で7:00から。この日は開店と同時に食べて出発します。</p>
         </div>
       </li>
-      <li class="drive"><span>車 約1時間（許田ICから名護経由）</span></li>
+      <li class="drive"><span>車 約1時間45分（那覇IC → 許田IC → 名護経由）</span></li>
       <li class="stop main">
-        <div class="time">9:00</div>
+        <div class="time">10:00</div>
         <div class="card">
           <h3>沖縄美ら海水族館</h3>
-          <p>ジンベエザメが泳ぐ大水槽「黒潮の海」がいちばんの見どころ。所要2〜3時間。外の無料エリアでイルカショーも見られます。</p>
-          <div class="kid"><b>子ども：</b>ベビーカー貸出あり。イルカショーの時間を入口で確認して、そこから逆算して回ると疲れにくいです。</div>
+          <p>ジンベエザメが泳ぐ大水槽「黒潮の海」が見どころ。所要2〜3時間。外の無料エリアでイルカショーも見られます。</p>
+          <div class="kid"><b>子ども：</b>ベビーカーの貸出あり。イルカショーの時刻を入口で確認して、それに合わせて回ると疲れにくいです。</div>
         </div>
       </li>
       <li class="stop">
-        <div class="time">12:00</div>
+        <div class="time">12:30</div>
         <div class="card">
           <h3>本部町で沖縄そばのランチ</h3>
-          <p>本部町は沖縄そばの店が多いエリア。人気店は昼前に並ぶので、11時半ごろの到着が目安です。</p>
+          <p>本部町は沖縄そばの店が多いエリア。人気店は昼どきに並ぶので、時間をずらすのも手です。</p>
         </div>
       </li>
       <li class="drive"><span>車 約30分</span></li>
@@ -242,16 +344,16 @@ footer { font-size: 12px; color: var(--muted); }
         <div class="time">14:00</div>
         <div class="card">
           <h3>古宇利大橋・古宇利島</h3>
-          <p>約2kmの橋を渡ると、両側が青い海のドライブに。橋のたもとの古宇利ビーチは遠浅で波も穏やかです。</p>
-          <div class="kid"><b>子ども：</b>着替えとタオルを車に積んでおけば、波打ち際の水遊びがすぐできます。</div>
+          <p>約2kmの橋を渡ると、両側が青い海のドライブに。橋のたもとの古宇利ビーチは遠浅で、波打ち際で遊べます。</p>
+          <div class="kid"><b>子ども：</b>着替えとタオルを車に積んでおくと安心です。</div>
         </div>
       </li>
-      <li class="drive"><span>車 約1時間</span></li>
+      <li class="drive"><span>車 約1時間20分（許田IC → 那覇IC）</span></li>
       <li class="stop">
         <div class="time">17:30</div>
         <div class="card">
-          <h3>ホテルに戻ってプール・夕食</h3>
-          <p>この日がいちばん運転の長い日。夜は移動なしでのんびり。</p>
+          <h3>ホテルに戻って休憩・夕食</h3>
+          <p>疲れていたら夕食は館内か近くで済ませましょう。子どもが車で寝てしまう日なので、帰り道はこまめに休憩を。</p>
         </div>
       </li>
     </ol>
@@ -260,40 +362,73 @@ footer { font-size: 12px; color: var(--muted); }
   <!-- Day 3 -->
   <section class="day" id="day3" style="--c: var(--sun)">
     <div class="day-head">
-      <span class="day-no">3日目</span>
-      <h2>万座毛から那覇へ戻る</h2>
-      <span class="stay">帰りの便：夕方発を想定</span>
+      <span class="day-no">11/7 土</span>
+      <h2>首里城から那覇空港へ</h2>
+      <span class="stay">チェックアウト 11:00／レンタカー返却 15:00／出発 18:55</span>
     </div>
     <ol class="timeline">
       <li class="stop">
+        <div class="time">7:30</div>
+        <div class="card">
+          <h3>朝食・荷造り</h3>
+          <p>朝食は9:30が最終入場。車に荷物を積んでから出かけます。</p>
+        </div>
+      </li>
+      <li class="drive"><span>車 約5〜10分</span></li>
+      <li class="stop main">
         <div class="time">9:00</div>
         <div class="card">
-          <h3>万座毛</h3>
-          <p>象の鼻の形をした断崖。ホテルから10分ほどで、30〜40分あれば一周できます。</p>
-          <div class="kid"><b>子ども：</b>崖の上は柵がありますが、手をつないで歩きましょう。</div>
+          <h3>首里城公園</h3>
+          <p>ホテルから近いので朝のうちに。正殿は再建工事中のため、見学できる範囲を公式サイトで確認しておきましょう。</p>
+          <div class="kid"><b>子ども：</b>石畳と坂が多いので、抱っこひもがあると楽です。</div>
         </div>
       </li>
-      <li class="stop">
-        <div class="time">10:30</div>
+      <li class="stop fixed">
+        <div class="time">10:45</div>
         <div class="card">
-          <h3>チェックアウト</h3>
+          <span class="tag">予約済み</span>
+          <h3>ホテル チェックアウト</h3>
+          <p>11:00まで。駐車場代（2泊 4,000円）の精算も忘れずに。</p>
         </div>
       </li>
-      <li class="drive"><span>車 約1時間（沖縄自動車道 → 那覇IC）</span></li>
+      <li class="drive"><span>車 約15分</span></li>
       <li class="stop main">
-        <div class="time">12:00</div>
+        <div class="time">11:15</div>
         <div class="card">
           <h3>国際通りでランチとお土産</h3>
           <p>タコライスや沖縄料理でランチ。お土産は紅いもタルト、ちんすこうなど。近くの牧志公設市場もおすすめ。</p>
-          <div class="kid"><b>子ども：</b>通り沿いのコインパーキングは満車が多いので、少し離れた駐車場を先に決めておくと安心です。</div>
+          <div class="kid"><b>子ども：</b>土曜は通り沿いの駐車場が埋まりやすいので、少し離れた駐車場を先に決めておくと安心です。</div>
         </div>
       </li>
-      <li class="drive"><span>車 約20分（給油してから）</span></li>
-      <li class="stop main">
+      <li class="drive"><span>車 約25分</span></li>
+      <li class="stop">
+        <div class="time">13:15</div>
+        <div class="card">
+          <h3>DMMかりゆし水族館（豊見城市 豊崎）</h3>
+          <p>商業施設iias沖縄豊崎の中にある水族館。屋内なので天気を気にせず回れ、所要1時間ほど。レンタカー店まで車ですぐです。</p>
+        </div>
+      </li>
+      <li class="drive"><span>車 約15分</span></li>
+      <li class="stop main fixed">
         <div class="time">15:00</div>
         <div class="card">
-          <h3>レンタカー返却 → 那覇空港</h3>
-          <p>満タン返しが基本。返却後に送迎バスで空港へ。出発の2時間前には返却しておくと安心です。</p>
+          <span class="tag">予約済み</span>
+          <h3>レンタカー返却（那覇空港店）</h3>
+          <p>満タン返し不要のプランなので給油なしでそのまま返却。送迎バスで空港へ。</p>
+        </div>
+      </li>
+      <li class="stop">
+        <div class="time">15:30</div>
+        <div class="card">
+          <h3>那覇空港でゆっくり</h3>
+          <p>出発の1時間30分前（17:25）までに搭乗手続き。それまで空港内でお土産の買い足しや夕食を。</p>
+        </div>
+      </li>
+      <li class="stop fixed">
+        <div class="time">18:55</div>
+        <div class="card">
+          <span class="tag">予約済み</span>
+          <h3>那覇空港 発（MM218）→ 関西T2 20:50 着</h3>
         </div>
       </li>
     </ol>
@@ -304,39 +439,39 @@ footer { font-size: 12px; color: var(--muted); }
     <h2>旅のメモ</h2>
     <div class="grid2">
       <div class="box">
+        <h3>ピーチの手荷物</h3>
+        <ul>
+          <li>大人とひなたちゃん：機内持込は身の回り品と合わせて1人7kgまで</li>
+          <li>預け荷物は1人1個・20kgまで（あおいちゃんは枠なし）</li>
+          <li>ベビーカーは空港で無料で預けられます</li>
+        </ul>
+      </div>
+      <div class="box">
         <h3>雨の日の代わりの行き先</h3>
         <ul>
-          <li>DMMかりゆし水族館（豊見城市・空港から車で約20分）</li>
           <li>おきなわワールド 玉泉洞（南城市・鍾乳洞）</li>
-          <li>イオンモール沖縄ライカム（北中城村・中部）</li>
+          <li>イオンモール沖縄ライカム（北中城村）</li>
+          <li>ホテルのキッズクラブ・館内でのんびり</li>
         </ul>
       </div>
       <div class="box">
         <h3>運転のコツ</h3>
         <ul>
           <li>那覇市内と国道58号は朝夕に混みます</li>
-          <li>平日の朝夕はバス専用レーンの時間帯があります。標識を確認</li>
-          <li>北部への移動は沖縄自動車道が速くて楽</li>
+          <li>平日の朝夕はバス専用レーンの時間帯があるので、標識を確認</li>
+          <li>北部への移動は沖縄自動車道（ETC付）が速くて楽</li>
         </ul>
       </div>
       <div class="box">
-        <h3>子連れの持ち物（車に積むもの）</h3>
+        <h3>車に積んでおくもの</h3>
         <ul>
-          <li>着替え一式・タオル・ビーチサンダル</li>
-          <li>日焼け止め・帽子（秋でも日差しが強い）</li>
+          <li>子どもの着替え一式・タオル・ビーチサンダル</li>
+          <li>日焼け止め・帽子（11月でも日差しが強い）</li>
           <li>車内用のおやつと飲み物</li>
-        </ul>
-      </div>
-      <div class="box">
-        <h3>予約しておくもの</h3>
-        <ul>
-          <li>レンタカー＋チャイルドシート</li>
-          <li>恩納村のホテル（2泊）</li>
-          <li>美ら海水族館のチケット（事前購入で入口がスムーズ）</li>
         </ul>
       </div>
     </div>
   </section>
 
-  <footer>時刻と運転時間は目安です。営業時間・料金は出発前に各施設の公式サイトで確認してください。</footer>
+  <footer>予約内容は確認メールと旅程表（eチケット控え）から転記しています。観光地の時刻と運転時間は目安なので、営業時間や料金は出発前に各施設の公式サイトで確認してください。</footer>
 </div>
