@@ -128,6 +128,13 @@ h1 .accent { color: var(--bingata-red); }
   justify-self: start; font-size: 11px; font-weight: 700; letter-spacing: .06em;
   color: var(--sea); border: 1px solid var(--sea); border-radius: 4px; padding: 0 6px;
 }
+.links { display: flex; flex-wrap: wrap; gap: 6px; margin: 2px 0 4px; }
+.links a {
+  font-size: 12px; font-weight: 700; color: var(--sea); text-decoration: none;
+  background: var(--sea-soft); border-radius: 999px; padding: 2px 10px;
+}
+.links a::after { content: " ↗"; }
+.links a:hover, .links a:focus-visible { text-decoration: underline; outline: none; }
 .kid {
   margin-top: 4px; background: var(--sun-soft); border-radius: 8px;
   padding: 6px 10px; font-size: 13px; line-height: 1.6;
@@ -286,6 +293,7 @@ footer { font-size: 12px; color: var(--muted); }
         <div class="time">5:40</div>
         <div class="card">
           <h3>関空 P5駐車場に停める</h3>
+          <p class="links"><a href="https://www.google.com/maps/search/?api=1&amp;query=%E9%96%A2%E8%A5%BF%E5%9B%BD%E9%9A%9B%E7%A9%BA%E6%B8%AF%20P5%E9%A7%90%E8%BB%8A%E5%A0%B4" target="_blank" rel="noopener">地図</a><a href="https://www.kansai-airport.or.jp/access/from-airport/car-and-car-park" target="_blank" rel="noopener">駐車場（公式）</a></p>
           <p>第2ターミナルを使うときはP5かP6。P5は第2ターミナルのすぐ前です（3日間駐車）。公式サイトから予約もできます。駐車場の場所と車を停めた列は写真で残しておくと、帰りの夜に迷いません。</p>
         </div>
       </li>
@@ -293,6 +301,7 @@ footer { font-size: 12px; color: var(--muted); }
         <div class="time">6:00</div>
         <div class="card">
           <h3>チェックイン・荷物を預ける</h3>
+          <p class="links"><a href="https://www.flypeach.com/lm/ai/airports/airportguide_domestic/kix" target="_blank" rel="noopener">Peach 関西空港ガイド</a></p>
           <p>カウンターと荷物預けは出発の120〜30分前（5:40〜7:10）。<b>7:10を過ぎると預けられません</b>。Peachアプリでオートチェックインを設定しておくと、5:40に搭乗券が自動で出ます。ベビーカーはここで預けます。</p>
         </div>
       </li>
@@ -301,6 +310,7 @@ footer { font-size: 12px; color: var(--muted); }
         <div class="card">
           <span class="tag">予約済み</span>
           <h3>関西空港 第2ターミナル発（MM211）</h3>
+          <p class="links"><a href="https://www.google.com/maps/search/?api=1&amp;query=%E9%96%A2%E8%A5%BF%E5%9B%BD%E9%9A%9B%E7%A9%BA%E6%B8%AF%20%E7%AC%AC2%E3%82%BF%E3%83%BC%E3%83%9F%E3%83%8A%E3%83%AB" target="_blank" rel="noopener">地図</a></p>
           <p>保安検査を通ったら、搭乗口で朝ごはん。</p>
         </div>
       </li>
@@ -309,6 +319,7 @@ footer { font-size: 12px; color: var(--muted); }
         <div class="card">
           <span class="tag">予約済み</span>
           <h3>那覇空港 到着</h3>
+          <p class="links"><a href="https://www.google.com/maps/search/?api=1&amp;query=%E9%82%A3%E8%A6%87%E7%A9%BA%E6%B8%AF%20%E5%9B%BD%E5%86%85%E7%B7%9A%E3%82%BF%E3%83%BC%E3%83%9F%E3%83%8A%E3%83%AB" target="_blank" rel="noopener">地図</a></p>
           <p>荷物を受け取ったら、レンタカー各社の送迎バス乗り場からユニバースレンタカーのバスへ。</p>
         </div>
       </li>
@@ -317,6 +328,7 @@ footer { font-size: 12px; color: var(--muted); }
         <div class="card">
           <span class="tag">予約済み</span>
           <h3>レンタカー受け取り（那覇空港店）</h3>
+          <p class="links"><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%83%A6%E3%83%8B%E3%83%90%E3%83%BC%E3%82%B9%E3%83%AC%E3%83%B3%E3%82%BF%E3%82%AB%E3%83%BC%20%E9%82%A3%E8%A6%87%E7%A9%BA%E6%B8%AF%E5%BA%97%20%E8%B1%8A%E8%A6%8B%E5%9F%8E%E5%B8%82%E4%BC%8A%E8%89%AF%E6%B3%A2518-1" target="_blank" rel="noopener">地図</a></p>
           <p>予約番号 R0HZC3ZK。チャイルドシートの取り付けをここで確認します。</p>
         </div>
       </li>
@@ -326,6 +338,7 @@ footer { font-size: 12px; color: var(--muted); }
         <div class="card">
           <span class="tag">行きたい</span>
           <h3>A&amp;W 牧港店でランチ</h3>
+          <p class="links"><a href="https://www.google.com/maps/search/?api=1&amp;query=A%26W%20%E7%89%A7%E6%B8%AF%E5%BA%97%20%E6%B5%A6%E6%B7%BB%E5%B8%82%E7%89%A7%E6%B8%AF4-9-1" target="_blank" rel="noopener">地図</a></p>
           <p>浦添市牧港の老舗店。車を停めて注文できるドライブインで、名物のルートビアはおかわり自由。ハンバーガーとカーリーフライを。</p>
           <div class="kid"><b>子ども：</b>店内席もあるので、車内で食べるか店内で食べるか選べます。</div>
         </div>
@@ -335,6 +348,7 @@ footer { font-size: 12px; color: var(--muted); }
         <div class="time">13:15</div>
         <div class="card">
           <h3>北谷 アメリカンビレッジ</h3>
+          <p class="links"><a href="https://www.google.com/maps/search/?api=1&amp;query=%E7%BE%8E%E6%B5%9C%E3%82%A2%E3%83%A1%E3%83%AA%E3%82%AB%E3%83%B3%E3%83%93%E3%83%AC%E3%83%83%E3%82%B8" target="_blank" rel="noopener">地図</a><a href="https://www.google.com/maps/search/?api=1&amp;query=%E5%8C%97%E8%B0%B7%E5%85%AC%E5%9C%92%E3%82%B5%E3%83%B3%E3%82%BB%E3%83%83%E3%83%88%E3%83%93%E3%83%BC%E3%83%81" target="_blank" rel="noopener">地図</a></p>
           <p>観覧車のあるショッピングエリアを散策。隣のサンセットビーチは遊歩道があり、海を見ながら歩けます。ここは11月30日まで遊泳期間なので、元気があれば波打ち際で少し遊ぶこともできます。</p>
           <p>おやつ候補：海沿いの遊歩道で食べ歩きできる<b>VISTA CLUB</b>のマンゴージェラート、定番の<b>ブルーシール</b>。休憩なら、ソファー席とキッズメニューがあり海が見える<b>BRUAL</b>（デポアイランド シーサイドビル2階）。</p>
         </div>
@@ -345,6 +359,7 @@ footer { font-size: 12px; color: var(--muted); }
         <div class="card">
           <span class="tag">予約済み</span>
           <h3>ホテルにチェックイン</h3>
+          <p class="links"><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%82%A4%E3%83%B3%E3%83%95%E3%82%A3%E3%83%8B%E3%82%B7%E3%82%B9%20%E9%82%A3%E8%A6%87%20%E9%A6%96%E9%87%8C%E5%9F%8E%20by%20%E3%83%92%E3%83%A5%E3%83%BC%E3%82%A4%E3%83%83%E3%83%88%E3%83%AA%E3%82%BE%E3%83%BC%E3%83%88" target="_blank" rel="noopener">地図</a><a href="https://infinisis.jp/" target="_blank" rel="noopener">公式サイト</a></p>
           <p>予約番号 08N9QKNR。部屋ですぐ水着に着替えてプールへ。お酒を飲むなら車はホテルに置いて、タクシーで夕食へ。</p>
           <div class="kid"><b>子ども：</b>館内にキッズクラブと授乳室があります。</div>
         </div>
@@ -364,6 +379,7 @@ footer { font-size: 12px; color: var(--muted); }
         <div class="card">
           <span class="tag">予約済み</span>
           <h3>今帰仁アグーしゃぶしゃぶ 長堂屋 那覇店</h3>
+          <p class="links"><a href="https://www.google.com/maps/search/?api=1&amp;query=%E4%BB%8A%E5%B8%B0%E4%BB%81%E3%82%A2%E3%82%B0%E3%83%BC%E3%81%97%E3%82%83%E3%81%B6%E3%81%97%E3%82%83%E3%81%B6%20%E9%95%B7%E5%A0%82%E5%B1%8B%20%E9%82%A3%E8%A6%87%E5%BA%97" target="_blank" rel="noopener">地図</a></p>
           <p>予約番号 R669RV385Z。4名（うち子ども2名）、半個室（禁煙）、滞在は2時間（20:30まで）。お会計は当日で、お通し700円とサービス料5%がかかります。</p>
           <p>今帰仁村に本店がある今帰仁アグーの専門店。本店ではシークワーサーと島とうがらしの薬味を添えた<b>ポン酢</b>で食べるスタイルです。</p>
           <p>那覇市安里（安里駅・牧志駅から徒歩5分、ライオンズマンション安里1階）。18:00〜23:00（料理のラストオーダー22:00）。</p>
@@ -393,6 +409,7 @@ footer { font-size: 12px; color: var(--muted); }
         <div class="time">10:00</div>
         <div class="card">
           <h3>沖縄美ら海水族館</h3>
+          <p class="links"><a href="https://www.google.com/maps/search/?api=1&amp;query=%E6%B2%96%E7%B8%84%E7%BE%8E%E3%82%89%E6%B5%B7%E6%B0%B4%E6%97%8F%E9%A4%A8" target="_blank" rel="noopener">地図</a><a href="https://churaumi.okinawa/" target="_blank" rel="noopener">公式サイト</a></p>
           <p>ジンベエザメが泳ぐ大水槽「黒潮の海」が見どころ。12時ごろまで。外の無料エリアでイルカショーも見られます。</p>
           <div class="kid"><b>子ども：</b>ベビーカーの貸出あり。イルカショーの時刻を入口で確認して、それに合わせて回ると疲れにくいです。</div>
         </div>
@@ -403,6 +420,7 @@ footer { font-size: 12px; color: var(--muted); }
         <div class="card">
           <span class="tag">追加</span>
           <h3>備瀬のフクギ並木</h3>
+          <p class="links"><a href="https://www.google.com/maps/search/?api=1&amp;query=%E5%82%99%E7%80%AC%E3%81%AE%E3%83%95%E3%82%AF%E3%82%AE%E4%B8%A6%E6%9C%A8" target="_blank" rel="noopener">地図</a></p>
           <p>水族館のすぐ北にある集落。フクギの木が続く日陰の小道で、昔ながらの沖縄の家並みが残っています。突き当たりは海。20〜30分の散歩で十分です。</p>
           <div class="kid"><b>子ども：</b>水牛車に乗って回ることもでき、小さな子に人気です。地元の人が暮らす集落なので静かに歩きましょう。</div>
         </div>
@@ -413,6 +431,7 @@ footer { font-size: 12px; color: var(--muted); }
         <div class="card">
           <span class="tag">行きたい</span>
           <h3>きしもと食堂で沖縄そばのランチ</h3>
+          <p class="links"><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%81%8D%E3%81%97%E3%82%82%E3%81%A8%E9%A3%9F%E5%A0%82%20%E6%9C%AC%E9%83%A8%E7%94%BA" target="_blank" rel="noopener">本店の地図</a><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%81%8D%E3%81%97%E3%82%82%E3%81%A8%E9%A3%9F%E5%A0%82%20%E5%85%AB%E9%87%8D%E5%B2%B3%E5%BA%97" target="_blank" rel="noopener">八重岳店の地図</a></p>
           <p>本部町で明治時代から続く老舗。木灰を使った昔ながらの麺とかつお出汁のスープが名物で、じゅーしぃ（炊き込みご飯）と一緒に。水族館から車で15分ほどの本部町の中心にあります。</p>
           <p>本店は小さく昼どきは行列になりがち。駐車場が広い<b>八重岳店</b>（本部町伊野波、11:00〜17:00・売り切れ次第終了）もあります。</p>
           <div class="kid"><b>子ども：</b>そばは小サイズもあるので、子どもと取り分けやすいです。</div>
@@ -425,6 +444,7 @@ footer { font-size: 12px; color: var(--muted); }
         <div class="card">
           <span class="tag">パターンA：絶景ドライブ</span>
           <h3>古宇利大橋・古宇利島</h3>
+          <p class="links"><a href="https://www.google.com/maps/search/?api=1&amp;query=%E5%8F%A4%E5%AE%87%E5%88%A9%E5%A4%A7%E6%A9%8B" target="_blank" rel="noopener">地図</a><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%82%AB%E3%83%95%E3%82%A7%20%E3%83%95%E3%82%AF%E3%83%AB%E3%83%93%20%E5%8F%A4%E5%AE%87%E5%88%A9%E5%B3%B6" target="_blank" rel="noopener">カフェ フクルビの地図</a></p>
           <p>約2kmの橋を渡ると、両側が青い海のドライブに。古宇利ビーチの遊泳期間は10月末で終わっているので、泳がずに浜の散歩と景色を楽しむプランです。</p>
           <p>休憩は高台の<b>カフェ フクルビ</b>へ。海を見渡すテラス席があり、キッズスペースとおむつ交換台つき（12:00〜19:00）。</p>
           <div class="kid"><b>子ども：</b>ハートロックのあるティーヌ浜は駐車場から歩くので、今回は無理せずで大丈夫です。</div>
@@ -435,6 +455,7 @@ footer { font-size: 12px; color: var(--muted); }
         <div class="card">
           <span class="tag">パターンB：海で泳ぐ</span>
           <h3>瀬底ビーチ（本部町）</h3>
+          <p class="links"><a href="https://www.google.com/maps/search/?api=1&amp;query=%E7%80%AC%E5%BA%95%E3%83%93%E3%83%BC%E3%83%81" target="_blank" rel="noopener">地図</a></p>
           <p>瀬底大橋を渡った先の、遠浅で水のきれいなビーチ。<b>2026年は11月30日まで遊泳期間</b>です。きしもと食堂から車で10分ほどで、古宇利島より移動が短く済みます。15:15ごろまで海遊び。</p>
           <div class="kid"><b>子ども：</b>11月の水温は25℃前後。風があると冷えるのでラッシュガードとタオルを多めに。監視員と遊泳エリアの旗を確かめてから入り、波が高い日は無理しないで。水遊び用おむつも忘れずに。</div>
         </div>
@@ -453,6 +474,7 @@ footer { font-size: 12px; color: var(--muted); }
         <div class="card">
           <span class="tag">予約済み</span>
           <h3>沖縄の台所 ぱいかじ 国際通り店</h3>
+          <p class="links"><a href="https://www.google.com/maps/search/?api=1&amp;query=%E6%B2%96%E7%B8%84%E3%81%AE%E5%8F%B0%E6%89%80%20%E3%81%B1%E3%81%84%E3%81%8B%E3%81%98%20%E5%9B%BD%E9%9A%9B%E9%80%9A%E3%82%8A%E5%BA%97" target="_blank" rel="noopener">地図</a><a href="https://www.hotpepper.jp/strJ001101842/" target="_blank" rel="noopener">ホットペッパー</a></p>
           <p>予約番号 SE5873034。4名、テーブル席（禁煙）、席のみの予約で料理は当日注文。お店の電話 098-868-8557。</p>
           <p>沖縄料理と生の三線民謡ライブ。ステージの最後はお客さんも立ち上がって一緒にカチャーシーを踊るのが定番です。</p>
           <p>那覇市久茂地3-29-68 2階（国際通り沿い・県庁前駅から徒歩約5分）。17:00〜24:00。ライブは19:30ごろと、全21:00ごろ（18:30の回があるという情報もあるので予約時に確認）。予算は1人4,000円くらい。</p>
@@ -482,6 +504,7 @@ footer { font-size: 12px; color: var(--muted); }
         <div class="time">9:00</div>
         <div class="card">
           <h3>首里城公園</h3>
+          <p class="links"><a href="https://www.google.com/maps/search/?api=1&amp;query=%E9%A6%96%E9%87%8C%E5%9F%8E%E5%85%AC%E5%9C%92" target="_blank" rel="noopener">地図</a><a href="https://oki-park.jp/shurijo/" target="_blank" rel="noopener">公式サイト</a><a href="https://www.google.com/maps/search/?api=1&amp;query=%E9%87%91%E5%9F%8E%E7%94%BA%E7%9F%B3%E7%95%B3%E9%81%93" target="_blank" rel="noopener">金城町石畳道の地図</a></p>
           <p>ホテルから近いので朝のうちに。再建中の正殿は11月22日に完成式、23日から内部公開の予定なので、旅行中は中には入れません。完成間近の赤い正殿を外から見られる、今だけのタイミングです。</p>
           <p>時間と元気があれば、首里城の南側に残る琉球王国時代の<b>金城町石畳道</b>も。苔むした石垣が続く坂道です。</p>
           <p>子どもがもう一度プールに入りたがったら、首里城をやめて<b>9:00〜10:15にホテルのプール</b>にしてもいいです。水着はビニール袋に入れて持ち帰ります。</p>
@@ -502,6 +525,7 @@ footer { font-size: 12px; color: var(--muted); }
         <div class="card">
           <span class="tag">行きたい</span>
           <h3>国際通り・ステーキハウス88 国際通り店でランチ</h3>
+          <p class="links"><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%82%B9%E3%83%86%E3%83%BC%E3%82%AD%E3%83%8F%E3%82%A6%E3%82%B988%20%E5%9B%BD%E9%9A%9B%E9%80%9A%E3%82%8A%E5%BA%97" target="_blank" rel="noopener">地図</a><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%83%89%E3%83%B3%E3%83%BB%E3%82%AD%E3%83%9B%E3%83%BC%E3%83%86%20%E5%9B%BD%E9%9A%9B%E9%80%9A%E3%82%8A%E5%BA%97" target="_blank" rel="noopener">ドン・キホーテの地図</a><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%83%9D%E3%83%BC%E3%81%9F%E3%81%BE%20%E7%89%A7%E5%BF%97%E5%B8%82%E5%A0%B4%E5%BA%97" target="_blank" rel="noopener">ポーたま 牧志市場店の地図</a></p>
           <p>沖縄の定番ステーキ店。11:00開店なので、混み始める前に入れます。子ども向けに<b>お子様プレート</b>（660円）もあります。電話 098-866-3760、ネット予約もできます。駐車場はなく、提携駐車場があるそうなので予約のときに聞いておきましょう。</p>
           <p>食べたら<b>ドン・キホーテ 国際通り店</b>（9:00〜翌5:00）でお土産。沖縄限定のお菓子や紅いもタルト、ちんすこうがまとめて買えます。13:15ごろまで。</p>
           <p>食べ歩き候補：揚げたての<b>サーターアンダギー</b>（第一牧志公設市場2階の「歩」や、市場近くの「松原屋製菓」）、焼きたてのシーサーの形のパン<b>シーサーパンMIA</b>。</p>
@@ -514,6 +538,7 @@ footer { font-size: 12px; color: var(--muted); }
         <div class="time">13:45</div>
         <div class="card">
           <h3>DMMかりゆし水族館（豊見城市 豊崎）</h3>
+          <p class="links"><a href="https://www.google.com/maps/search/?api=1&amp;query=DMM%E3%81%8B%E3%82%8A%E3%82%86%E3%81%97%E6%B0%B4%E6%97%8F%E9%A4%A8" target="_blank" rel="noopener">地図</a><a href="https://kariyushi-aquarium.com/" target="_blank" rel="noopener">公式サイト</a><a href="https://www.google.com/maps/search/?api=1&amp;query=%E8%B1%8A%E5%B4%8E%E7%BE%8E%E3%82%89SUN%E3%83%93%E3%83%BC%E3%83%81" target="_blank" rel="noopener">美らSUNビーチの地図</a></p>
           <p>15:00の返却までの時間でさっと。国際通りが長引いたら飛ばして、そのままレンタカー返却へ。</p>
           <p>商業施設iias沖縄豊崎の中にある水族館。2フロアでさくっと回れ、屋内なので天気を気にせず楽しめます（所要1時間ほど）。各階に子ども用トイレと授乳室あり。</p>
           <p>時間が余ったら、すぐ近くの<b>豊崎美らSUNビーチ</b>へ。那覇空港に降りる飛行機が間近に見えます。</p>
@@ -525,6 +550,7 @@ footer { font-size: 12px; color: var(--muted); }
         <div class="card">
           <span class="tag">予約済み</span>
           <h3>レンタカー返却（那覇空港店）</h3>
+          <p class="links"><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%83%A6%E3%83%8B%E3%83%90%E3%83%BC%E3%82%B9%E3%83%AC%E3%83%B3%E3%82%BF%E3%82%AB%E3%83%BC%20%E9%82%A3%E8%A6%87%E7%A9%BA%E6%B8%AF%E5%BA%97%20%E8%B1%8A%E8%A6%8B%E5%9F%8E%E5%B8%82%E4%BC%8A%E8%89%AF%E6%B3%A2518-1" target="_blank" rel="noopener">地図</a></p>
           <p>満タン返し不要のプランなので給油なしでそのまま返却。送迎バスで空港へ。</p>
         </div>
       </li>
@@ -532,6 +558,7 @@ footer { font-size: 12px; color: var(--muted); }
         <div class="time">15:30</div>
         <div class="card">
           <h3>那覇空港でゆっくり</h3>
+          <p class="links"><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%83%9D%E3%83%BC%E3%81%9F%E3%81%BE%20%E9%82%A3%E8%A6%87%E7%A9%BA%E6%B8%AF%20%E5%9B%BD%E5%86%85%E7%B7%9A%E5%88%B0%E7%9D%80%E3%83%AD%E3%83%93%E3%83%BC" target="_blank" rel="noopener">ポーたま 那覇空港店の地図</a></p>
           <p>出発の1時間30分前（17:25）までに搭乗手続き。それまで空港内でお土産の買い足しを。夕ごはんは国内線到着ロビーの<b>ポーたま</b>で。</p>
         </div>
       </li>
